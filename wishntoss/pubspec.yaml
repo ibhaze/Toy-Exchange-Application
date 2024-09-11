@@ -30,6 +30,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  #image upload
   image_picker: ^0.8.7+3 
 
 

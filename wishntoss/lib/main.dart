@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'discard_screen.dart'; // discard_screen 파일을 import
+import 'discard_add_screen.dart'; 
 
 void main() {
   runApp(const MyApp());
