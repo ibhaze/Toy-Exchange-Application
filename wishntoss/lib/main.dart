@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'discard_add_screen.dart'; 
+import 'discard_list_screen.dart'; 
 
 void main() {
   runApp(const MyApp());
@@ -35,7 +35,7 @@ class MyHomePage extends StatelessWidget {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const DiscardScreen()),
+              MaterialPageRoute(builder: (context) => const DiscardListScreen()),
             );
           },
           child: const Text('Go to Discard Screen'),

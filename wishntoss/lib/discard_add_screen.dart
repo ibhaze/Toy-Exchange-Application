@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'discard_list_screen.dart'; // discard_list_screen import
 
+//Discard Add Screen
 class DiscardScreen extends StatefulWidget {
   const DiscardScreen({super.key});
 
@@ -60,19 +60,6 @@ class _DiscardScreenState extends State<DiscardScreen> {
             ElevatedButton(
               onPressed: _pickImageFromGallery,
               child: const Text('Pick Image from Gallery'),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                // DiscardListScreen으로 이동
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const DiscardListScreen(),
-                  ),
-                );
-              },
-              child: const Text('Go to Discard List'),
             ),
           ],
         ),
