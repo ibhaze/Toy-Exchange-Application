@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-//Discard Add Screen
 class DiscardAddScreen extends StatefulWidget {
   const DiscardAddScreen({super.key});
 
@@ -14,7 +13,12 @@ class _DiscardAddScreenState extends State<DiscardAddScreen> {
   final ImagePicker _picker = ImagePicker();
   XFile? _image;
 
-  // take a picture with camera
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _conditionController = TextEditingController();
+  final TextEditingController _categoryController = TextEditingController();
+  final TextEditingController _notesController = TextEditingController();
+
+  // Take a picture with camera
   Future<void> _takePhoto() async {
     final pickedImage = await _picker.pickImage(source: ImageSource.camera);
     if (pickedImage != null) {
@@ -24,7 +28,7 @@ class _DiscardAddScreenState extends State<DiscardAddScreen> {
     }
   }
 
-  // take picture from gallery
+  // Pick image from gallery
   Future<void> _pickImageFromGallery() async {
     final pickedImage = await _picker.pickImage(source: ImageSource.gallery);
     if (pickedImage != null) {
@@ -34,7 +38,7 @@ class _DiscardAddScreenState extends State<DiscardAddScreen> {
     }
   }
 
-  // manage photo upload option
+  // Show photo upload options
   void _showUploadOptions(BuildContext context) {
     showModalBottomSheet(
       context: context,
@@ -65,25 +69,43 @@ class _DiscardAddScreenState extends State<DiscardAddScreen> {
     );
   }
 
-   @override
-  Widget build(BuildContext context) {
-    // 1번 박스 이후에 나타낼 텍스트 리스트
-    final List<String> uploadList = [
-      'Title',
-      'Condition',
-      'Categories',
-      'Notes'
-    ];
+  // Create reusable text field widget
+  Widget _buildTextField(
+      {required String labelText, required TextEditingController controller}) {
+    return Padding(
+      padding: const EdgeInsets.all(15.0),
+      child: TextFormField(
+        controller: controller,
+        decoration: InputDecoration(
+          labelText: labelText,
+          border: const OutlineInputBorder(),
+          filled: true,
+          fillColor: const Color.fromARGB(255, 189, 189, 189),
+        ),
+      ),
+    );
+  }
 
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _conditionController.dispose();
+    _categoryController.dispose();
+    _notesController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Discard Screen'),
       ),
-      body: Column(
-        children: List.generate(5, (index) {
-          if (index == 0) {
-            return GestureDetector(
-              // show photo upload option
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            GestureDetector(
+              // Show photo upload option
               onTap: () {
                 _showUploadOptions(context);
               },
@@ -124,28 +146,18 @@ class _DiscardAddScreenState extends State<DiscardAddScreen> {
                         ),
                 ),
               ),
-            );
-          } else {
-            return Container(
-              height: 50,
-              margin: const EdgeInsets.all(15.0),
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 189, 189, 189),
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              child: Center(
-                child: Text(
-                  uploadList[index - 1], 
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                  ),
-                ),
-              ),
-            );
-          }
-        }),
+            ),
+            // Reuse _buildTextField for each input field
+            _buildTextField(labelText: 'Title', controller: _titleController),
+            _buildTextField(
+                labelText: 'Condition', controller: _conditionController),
+            _buildTextField(
+                labelText: 'Categories', controller: _categoryController),
+            _buildTextField(labelText: 'Notes', controller: _notesController),
+          ],
+        ),
       ),
     );
   }
 }
+
