@@ -45,10 +45,10 @@ class DiscardListScreen extends StatelessWidget {
                 },
                 child: Container(
                   decoration: const BoxDecoration(
-                    color: Color.fromARGB(255, 179, 179, 179), // 추가 버튼 배경색
+                    color: Color.fromARGB(255, 179, 179, 179),
                   ),
                   child: const Icon(
-                    Icons.add, // 추가 버튼 아이콘
+                    Icons.add, 
                     size: 40,
                     color: Colors.white,
                   ),
@@ -66,7 +66,7 @@ class DiscardListScreen extends StatelessWidget {
                     Expanded(
                       child: Image.asset(
                         toyImage,
-                        fit: BoxFit.cover, // 이미지를 그리드 크기에 맞추고 잘라냄
+                        fit: BoxFit.cover, 
                         width: double.infinity,
                       ),
                     ),

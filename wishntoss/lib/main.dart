@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'discard_list_screen.dart'; 
+import 'wish_list_screen.dart'; 
 
 void main() {
   runApp(const MyApp());
@@ -31,17 +32,33 @@ class MyHomePage extends StatelessWidget {
         title: const Text('Home Page'),
       ),
       body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const DiscardListScreen()),
-            );
-          },
-          child: const Text('Go to Discard Screen'),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center, // Center the buttons vertically
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const DiscardListScreen()),
+                );
+              },
+              child: const Text('Go to Discard Screen'),
+            ),
+            const SizedBox(height: 20), // Add space between the buttons
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const WishListScreen()),
+                );
+              },
+              child: const Text('Go to Wish Screen'),
+            ),
+          ],
         ),
       ),
     );
   }
 }
+
 
