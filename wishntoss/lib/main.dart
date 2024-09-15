@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'discard_list_screen.dart'; 
-import 'wish_list_screen.dart'; 
+import 'screen/discard_list_screen.dart'; 
+import 'screen/wish_list_screen.dart'; 
+import 'screen/profile_screen.dart'; 
+import 'screen/chat_screen.dart';
+import 'screen/home_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -22,43 +25,73 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  int _selectedIndex = 0;
+
+  static const List<Widget> _screens = <Widget>[
+    HomeScreen(),
+    WishListScreen(), 
+    ChatScreen(),  
+    DiscardListScreen(),
+    ProfileScreen(),    
+        
+       
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home Page'),
-      ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center, // Center the buttons vertically
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const DiscardListScreen()),
-                );
-              },
-              child: const Text('Go to Discard Screen'),
-            ),
-            const SizedBox(height: 20), // Add space between the buttons
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const WishListScreen()),
-                );
-              },
-              child: const Text('Go to Wish Screen'),
-            ),
-          ],
-        ),
+        child: _screens[_selectedIndex], 
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed, 
+        backgroundColor: const Color.fromARGB(255, 206, 206, 206),
+        selectedItemColor: const Color.fromARGB(255, 0, 0, 0),
+        unselectedItemColor: const Color.fromARGB(255, 104, 104, 104), 
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite),
+            label: 'Wish',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.chat),
+            label: 'Chat',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.delete),
+            label: 'Discard',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+        ],
+        currentIndex: _selectedIndex, // 현재 선택된 인덱스
+        onTap: _onItemTapped, // 탭할 때마다 화면 전환
       ),
     );
   }
 }
+
+
+
 
 
