@@ -1,11 +1,21 @@
 import 'package:flutter/material.dart';
-import 'screen/discard_list_screen.dart'; 
-import 'screen/wish_list_screen.dart'; 
-import 'screen/profile_screen.dart'; 
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+import 'screen/discard_list_screen.dart';
+import 'screen/wish_list_screen.dart';
+import 'screen/profile_screen.dart';
 import 'screen/chat_screen.dart';
 import 'screen/home_screen.dart';
 
-void main() {
+void main() async {
+  // Ensure Flutter is properly initialized before Firebase
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Firebase
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(const MyApp());
 }
 
@@ -36,13 +46,11 @@ class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
 
   static const List<Widget> _screens = <Widget>[
-    HomeScreen(),
-    WishListScreen(), 
-    ChatScreen(),  
-    DiscardListScreen(),
-    ProfileScreen(),    
-        
-       
+    SafeArea(child: HomeScreen()),
+    SafeArea(child: WishListScreen()),
+    SafeArea(child: ChatScreen()),
+    SafeArea(child: DiscardListScreen()),
+    SafeArea(child: ProfileScreen()),
   ];
 
   void _onItemTapped(int index) {
@@ -55,13 +63,13 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: _screens[_selectedIndex], 
+        child: _screens[_selectedIndex],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed, 
+        type: BottomNavigationBarType.fixed,
         backgroundColor: const Color.fromARGB(255, 206, 206, 206),
         selectedItemColor: const Color.fromARGB(255, 0, 0, 0),
-        unselectedItemColor: const Color.fromARGB(255, 104, 104, 104), 
+        unselectedItemColor: const Color.fromARGB(255, 104, 104, 104),
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -84,14 +92,9 @@ class _MyHomePageState extends State<MyHomePage> {
             label: 'Profile',
           ),
         ],
-        currentIndex: _selectedIndex, // 현재 선택된 인덱스
-        onTap: _onItemTapped, // 탭할 때마다 화면 전환
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
       ),
     );
   }
 }
-
-
-
-
-
