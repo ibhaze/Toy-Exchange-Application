@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'loading_page.dart'; // Import the LoadingPage
 
 class LandingPage extends StatelessWidget {
   const LandingPage({super.key});
@@ -7,100 +8,58 @@ class LandingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          // Logo
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 80.0, right: 80, bottom: 40, top: 160
-            ),
-            child: Image.asset('assets/images/teddy.png'),
-          ),
-          // Text
-          Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: Text(
-              'Trade a toy and spread the festive spirit!',
-              textAlign: TextAlign.center,
-              style: GoogleFonts.fredoka(
-                fontSize: 36,
-                fontWeight: FontWeight.bold,
+      body: Align(
+        alignment: Alignment.center,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 220.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 80.0, vertical: 40.0),
+                child: Image.asset('assets/images/bells.png'),
               ),
-            ),
-          ),
-          const SizedBox(height: 24),
-          // Description
-          Text(
-            'Start exchanging today',
-            style: TextStyle(color: Colors.grey.shade600),
-          ),
-          const Spacer(),
-          // Get Started button
-          GestureDetector(
-            onTap: () => showModalBottomSheet(
-              context: context,
-              builder: (BuildContext context) {
-                return Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 1.0),
+                child: Text(
+                  'WISH \'N TOSS',
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.lexend(
+                    fontSize: 47,
+                    color: const Color(0xFFCC0036),
                   ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      // Draggable handle
-                      Container(
-                        height: 5,
-                        width: 40,
-                        margin: const EdgeInsets.symmetric(vertical: 8),
-                        decoration: BoxDecoration(
-                          color: Colors.grey.shade600,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                      // Header Text
-                       Padding(
-                        padding:  const EdgeInsets.all(16.0),
-                        child: Text(
-                          'Right now im looking for...',
-                          textAlign: TextAlign.center,
-                          style: GoogleFonts.fredoka(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                             
-                          ),
-                        ),
-                      ),
-                      // Main content
-                      const SizedBox(
-                        height: 400 - 48, // Adjust height to fit header
-                        child: Center(
-                          // Add your form or other content here
-                        ),
-                      ),
-                    ],
+                ),
+              ),
+              Text(
+                'Swap Toys , Trade Joy',
+                style: GoogleFonts.lexend(
+                  color: const Color(0xFFCC0036),
+                  fontWeight: FontWeight.w300,
+                ),
+              ),
+              const SizedBox(height: 60),
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => const LoadingPage()),
+                  );
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFCC0036),
+                    borderRadius: BorderRadius.circular(30),
                   ),
-                );
-              },
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+                  padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
+                  child: const Text(
+                    'Get Started',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
               ),
-              isScrollControlled: true,
-            ),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.deepPurple,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              padding: const EdgeInsets.all(24),
-              child: const Text(
-                'Get Started',
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
+            ],
           ),
-          const Spacer(),
-        ],
+        ),
       ),
     );
   }
