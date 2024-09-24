@@ -92,4 +92,41 @@ class FirebaseService {
       throw e;
     }
   }
+
+  // Delete image from Firebase Storage and metadata from Firestore
+  Future<void> deleteImageAndData(String imageUrl, String documentId) async {
+    try {
+      // 1. Delete the image from Firebase Storage
+      Reference storageRef = _storage.refFromURL(imageUrl);
+      await storageRef.delete();
+
+      // 2. Delete the metadata from Firestore
+      await _firestore.collection('discard_items').doc(documentId).delete();
+
+      print('Image and data deleted successfully');
+    } catch (e) {
+      print('Error deleting image and data: $e');
+      throw e;
+    }
+  } // Fetch image URLs and their document IDs from Firestore
+
+  Future<Map<String, List<String>>> fetchImagesAndDocIds() async {
+    try {
+      QuerySnapshot querySnapshot =
+          await _firestore.collection('discard_items').get();
+
+      List<String> imageUrls = [];
+      List<String> documentIds = [];
+
+      for (var doc in querySnapshot.docs) {
+        imageUrls.add(doc['imageURL'] as String);
+        documentIds.add(doc.id);
+      }
+
+      return {'imageUrls': imageUrls, 'documentIds': documentIds};
+    } catch (e) {
+      print('Error fetching image URLs and document IDs: $e');
+      throw e;
+    }
+  }
 }
