@@ -129,4 +129,26 @@ class FirebaseService {
       throw e;
     }
   }
+
+  // Fetch details for a given image URL from Firestore
+  Future<Map<String, dynamic>> fetchImageDetails(String imageUrl) async {
+    try {
+      // Query the database for the document that matches the imageUrl
+      final querySnapshot = await _firestore
+          .collection('discard_items')
+          .where('imageURL', isEqualTo: imageUrl)
+          .limit(1)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        // Assuming that each image URL uniquely identifies a document
+        return querySnapshot.docs.first.data();
+      } else {
+        throw Exception('No details found for the specified image URL.');
+      }
+    } catch (e) {
+      print('Failed to fetch image details: $e');
+      throw e; // Rethrow to handle the error outside
+    }
+  }
 }

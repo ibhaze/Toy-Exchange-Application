@@ -63,7 +63,12 @@ class _DiscardListScreenState extends State<DiscardListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Discard List'),
+        title: const Text(
+          'Discard List',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -146,7 +151,7 @@ class _DiscardListScreenState extends State<DiscardListScreen> {
                               child: const Icon(
                                 Icons.delete,
                                 color: Color.fromARGB(255, 255, 255, 255),
-                                size: 30,
+                                size: 25,
                               ),
                             ),
                           ),

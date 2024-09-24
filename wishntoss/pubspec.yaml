@@ -72,6 +72,7 @@ flutter:
     - assets/images/bells.png
     - assets/images/sinterklaas.png
     - assets/images/teddy.png
+    - assets/images/sinterklaas_face.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 
