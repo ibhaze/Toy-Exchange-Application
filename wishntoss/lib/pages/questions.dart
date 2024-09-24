@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:wishntoss/widgets/bottom_navigation_bar.dart';
 
 class QuestionPage extends StatefulWidget {
   const QuestionPage({super.key});
@@ -10,7 +11,8 @@ class QuestionPage extends StatefulWidget {
 
 class QuestionPageState extends State<QuestionPage> {
   int _currentQuestionIndex = 0; // Tracks the current question index
-  final List<int?> _selectedOptions = List<int?>.filled(4, null); // Tracks selected options
+  final List<int?> _selectedOptions =
+      List<int?>.filled(4, null); // Tracks selected options
 
   final List<String> _questions = [
     'How would you describe your status?',
@@ -48,7 +50,7 @@ class QuestionPageState extends State<QuestionPage> {
 
   @override
   Widget build(BuildContext context) {
-     Color buttonColor = const Color(0xFFCC0036);
+    Color buttonColor = const Color(0xFFCC0036);
 
     return Scaffold(
       appBar: AppBar(
@@ -61,7 +63,8 @@ class QuestionPageState extends State<QuestionPage> {
             if (_currentQuestionIndex > 0) {
               _navigateToQuestion(false); // Navigate back to previous question
             } else {
-              Navigator.of(context).popUntil((route) => route.isFirst); // Go back to the first screen
+              Navigator.of(context).popUntil(
+                  (route) => route.isFirst); // Go back to the first screen
             }
           },
         ),
@@ -83,7 +86,8 @@ class QuestionPageState extends State<QuestionPage> {
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Container(
-                    width: 350 * ((_currentQuestionIndex + 1) / _questions.length),
+                    width:
+                        350 * ((_currentQuestionIndex + 1) / _questions.length),
                     decoration: BoxDecoration(
                       color: buttonColor,
                       borderRadius: BorderRadius.circular(5),
@@ -106,17 +110,22 @@ class QuestionPageState extends State<QuestionPage> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      _questions[_currentQuestionIndex], // Display current question
+                      _questions[
+                          _currentQuestionIndex], // Display current question
                       style: GoogleFonts.lexend(fontSize: 20.0),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 20),
-                    ..._options[_currentQuestionIndex].asMap().entries.map((entry) {
+                    ..._options[_currentQuestionIndex]
+                        .asMap()
+                        .entries
+                        .map((entry) {
                       int idx = entry.key;
                       String option = entry.value;
 
                       // Check if this option is selected
-                      bool isSelected = _selectedOptions[_currentQuestionIndex] == idx;
+                      bool isSelected =
+                          _selectedOptions[_currentQuestionIndex] == idx;
 
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -134,26 +143,37 @@ class QuestionPageState extends State<QuestionPage> {
                           child: Container(
                             height: 80,
                             decoration: BoxDecoration(
-                              color: isSelected ? const Color(0xFFCC0036) : const Color(0xFFD9D9D9),
+                              color: isSelected
+                                  ? const Color(0xFFCC0036)
+                                  : const Color(0xFFD9D9D9),
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
-                                color: isSelected ? Colors.black : const  Color(0xFFD9D9D9),
+                                color: isSelected
+                                    ? Colors.black
+                                    : const Color(0xFFD9D9D9),
                                 width: 2,
                               ),
                             ),
                             padding: const EdgeInsets.symmetric(vertical: 16.0),
                             width: double.infinity,
                             child: Align(
-                              alignment: (idx % 2 == 0) ? Alignment.centerRight : Alignment.centerLeft,
+                              alignment: (idx % 2 == 0)
+                                  ? Alignment.centerRight
+                                  : Alignment.centerLeft,
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20.0),
                                 child: Text(
                                   option,
                                   style: GoogleFonts.lexend(
                                     fontSize: 18.0,
-                                    color: isSelected ? Colors.white : Colors.black,
+                                    color: isSelected
+                                        ? Colors.white
+                                        : Colors.black,
                                   ),
-                                  textAlign: (idx % 2 == 0) ? TextAlign.right : TextAlign.left,
+                                  textAlign: (idx % 2 == 0)
+                                      ? TextAlign.right
+                                      : TextAlign.left,
                                 ),
                               ),
                             ),
@@ -176,7 +196,8 @@ class QuestionPageState extends State<QuestionPage> {
                 style: GoogleFonts.lexend(
                   fontSize: 16.0,
                   color: buttonColor,
-                  decoration: TextDecoration.underline, // Adds underline to the "Skip" text
+                  decoration: TextDecoration
+                      .underline, // Adds underline to the "Skip" text
                 ),
               ),
             ),
@@ -189,16 +210,27 @@ class QuestionPageState extends State<QuestionPage> {
                   _navigateToQuestion(true); // Go to the next question
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Survey Completed')), // Display completion message
+                    const SnackBar(
+                        content: Text(
+                            'Survey Completed')), // Display completion message
+                  );
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            BottomNavBar()), // navigate to Home page
                   );
                 }
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: buttonColor,
-                padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 12.0),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 40.0, vertical: 12.0),
               ),
               child: Text(
-                _currentQuestionIndex < _questions.length - 1 ? 'Next' : 'Complete',
+                _currentQuestionIndex < _questions.length - 1
+                    ? 'Next'
+                    : 'Complete',
                 style: GoogleFonts.lexend(
                   color: Colors.white,
                   fontSize: 18,
