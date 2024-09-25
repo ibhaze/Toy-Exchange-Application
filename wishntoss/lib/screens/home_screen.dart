@@ -13,24 +13,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Container(
-      //       child: Row(
-      //     children: [
-      //       Image.asset("assets/images/sinterklaas_face.png",
-      //           width: 48, height: 48),
-      //       SizedBox(width: 10),
-      //       const Column(
-      //         crossAxisAlignment: CrossAxisAlignment.start,
-      //         children: [
-      //           Text("Hello",
-      //               style: TextStyle(fontSize: 14, color: Colors.grey)),
-      //           Text("Minhee", style: TextStyle(fontWeight: FontWeight.bold))
-      //         ],
-      //       )
-      //     ],
-      //   )),
-      // ),
       body: Center(
         child: Padding(
           padding: EdgeInsets.all(16.0),
