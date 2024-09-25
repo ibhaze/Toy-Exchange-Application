@@ -1,7 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:wishntoss/screens/login_screen.dart';
+import 'package:wishntoss/services/auth_service.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -12,6 +11,7 @@ class SignupScreen extends StatefulWidget {
 
 class _SignupScreenState extends State<SignupScreen> {
   final _formKey = GlobalKey<FormState>();
+  final _authService = AuthService();
   final TextEditingController _passwordController =
       TextEditingController(); // Password Controller
   final TextEditingController _confirmPasswordController =
@@ -34,45 +34,57 @@ class _SignupScreenState extends State<SignupScreen> {
     print('Firebase has been initialized');
   }
 
+  // void _signup() async {
+  //   if (_formKey.currentState!.validate()) {
+  //     _formKey.currentState!.save();
+
+  //     try {
+  //       // Firebase Auth signup logic
+  //       final credential =
+  //           await FirebaseAuth.instance.createUserWithEmailAndPassword(
+  //         email: _email,
+  //         password: _passwordController.text,
+  //       );
+
+  //       print('User registered: ${credential.user?.email}');
+  //       Navigator.pushReplacement(
+  //         context,
+  //         MaterialPageRoute(builder: (context) => LoginScreen()),
+  //       );
+  //     } on FirebaseAuthException catch (e) {
+  //       if (e.code == 'weak-password') {
+  //         print('The password provided is too weak.');
+  //         ScaffoldMessenger.of(context).showSnackBar(
+  //           SnackBar(content: Text('The password provided is too weak.')),
+  //         );
+  //       } else if (e.code == 'email-already-in-use') {
+  //         print('The account already exists for that email.');
+  //         ScaffoldMessenger.of(context).showSnackBar(
+  //           SnackBar(
+  //               content: Text('The account already exists for that email.')),
+  //         );
+  //       }
+  //     } catch (e) {
+  //       print(e);
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(content: Text('An error occurred. Please try again.')),
+  //       );
+  //     }
+
+  //     print(
+  //         'Username: $_username, Email: $_email, Bio: $_bio, Password: $_password');
+  //   }
+  // }
   void _signup() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-
-      try {
-        // Firebase Auth signup logic
-        final credential =
-            await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: _email,
-          password: _passwordController.text,
-        );
-
-        print('User registered: ${credential.user?.email}');
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => LoginScreen()),
-        );
-      } on FirebaseAuthException catch (e) {
-        if (e.code == 'weak-password') {
-          print('The password provided is too weak.');
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('The password provided is too weak.')),
-          );
-        } else if (e.code == 'email-already-in-use') {
-          print('The account already exists for that email.');
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-                content: Text('The account already exists for that email.')),
-          );
-        }
-      } catch (e) {
-        print(e);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('An error occurred. Please try again.')),
-        );
-      }
-
-      print(
-          'Username: $_username, Email: $_email, Bio: $_bio, Password: $_password');
+      _authService.signUp(
+        email: _email,
+        password: _passwordController.text,
+        displayName: _username,
+        bio: _bio,
+        context: context,
+      );
     }
   }
 

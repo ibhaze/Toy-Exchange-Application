@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:wishntoss/services/auth_service.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -10,11 +11,30 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  final AuthService _authService = AuthService();
   final ImagePicker _picker = ImagePicker();
   File? _image;
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _bioController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  void _loadUserData() async {
+    Map<String, String?> userDetails =
+        await _authService.getCurrentUserDetails();
+    if (userDetails.isNotEmpty) {
+      setState(() {
+        _usernameController.text = userDetails['displayName'] ?? '';
+        _emailController.text = userDetails['email'] ?? '';
+        _bioController.text = userDetails['bio'] ?? '';
+      });
+    }
+  }
 
   // Function to pick image from gallery
   Future<void> _pickImage() async {
@@ -26,38 +46,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
-  // Function to save profile information
-  void _saveProfile() {
+  void _saveProfile() async {
     String username = _usernameController.text;
-    String email = _emailController.text;
     String bio = _bioController.text;
 
-    // You can now use the data as needed
+    try {
+      // AuthService의 updateUserProfile 메서드를 호출하여 Firestore에 업데이트
+      await _authService.updateUserProfile(displayName: username, bio: bio);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Profile saved successfully!')),
+      );
+    } catch (e) {
+      print('Error saving profile: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('Failed to save profile. Please try again.')),
+      );
+    }
+
     print('username: $username');
-    print('Email: $email');
     print('Bio: $bio');
     print('Profile image: ${_image?.path}');
 
-    //    Store data in firebase
-    //   await FirebaseFirestore.instance.collection('profiles').add({
-    //   'name': name,
-    //   'birthday': birthday,
-    //   'address': address,
-    //   'contact': contact,
-    //   'profileImage': _image?.path,
-    // });
-
-    // Clear fields after saving (optional)
-    _usernameController.clear();
-    _emailController.clear();
-    _bioController.clear();
     setState(() {
       _image = null;
     });
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Profile saved successfully!')),
-    );
   }
 
   @override
@@ -166,8 +180,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         hintText: hintText,
         prefixIcon: Icon(icon, color: Color(0xFFB22222)),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(25), // 모서리를 둥글게 설정
-          borderSide: BorderSide.none, // 테두리 없애기
+          borderRadius: BorderRadius.circular(25),
+          borderSide: BorderSide.none,
         ),
         fillColor: Color(0xFFD9D9D9),
         filled: true,

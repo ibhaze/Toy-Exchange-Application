@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wishntoss/pages/questions.dart';
+import 'package:wishntoss/services/auth_service.dart';
 import 'package:wishntoss/widgets/recommended_widget.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -10,6 +10,23 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final AuthService _authService = AuthService();
+  String _userName = '';
+  @override
+  void initState() {
+    super.initState();
+    _loadUserName();
+  }
+
+//fech user name
+  Future<void> _loadUserName() async {
+    Map<String, String?> userDetails =
+        await _authService.getCurrentUserDetails();
+    setState(() {
+      _userName = userDetails['displayName'] ?? 'Guest';
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,12 +41,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   Image.asset("assets/images/sinterklaas_face.png",
                       width: 48, height: 48),
                   SizedBox(width: 10),
-                  const Column(
+                  Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text("Hello",
                           style: TextStyle(fontSize: 14, color: Colors.grey)),
-                      Text("Minhee",
+                      Text(_userName,
                           style: TextStyle(
                               fontSize: 24, fontWeight: FontWeight.bold))
                     ],

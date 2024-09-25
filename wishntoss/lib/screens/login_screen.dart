@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:wishntoss/widgets/bottom_navigation_bar.dart';
+import 'package:wishntoss/services/auth_service.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -10,28 +11,45 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final _authService = AuthService();
   final _formKey = GlobalKey<FormState>();
   String _email = '';
   String _password = '';
 
+  // void _login() async {
+  //   if (_formKey.currentState!.validate()) {
+  //     _formKey.currentState!.save();
+  //     try {
+  //       final credential = await FirebaseAuth.instance
+  //           .signInWithEmailAndPassword(email: _email, password: _password);
+  //       Navigator.pushReplacement(
+  //         context,
+  //         MaterialPageRoute(builder: (context) => BottomNavBar()),
+  //       );
+  //     } on FirebaseAuthException catch (e) {
+  //       if (e.code == 'user-not-found') {
+  //         print('No user found for that email.');
+  //       } else if (e.code == 'wrong-password') {
+  //         print('Wrong password provided for that user.');
+  //       }
+  //     }
+  //     print('Email: $_email, Password: $_password');
+  //   }
+  // }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   void _login() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      try {
-        final credential = await FirebaseAuth.instance
-            .signInWithEmailAndPassword(email: _email, password: _password);
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => BottomNavBar()),
-        );
-      } on FirebaseAuthException catch (e) {
-        if (e.code == 'user-not-found') {
-          print('No user found for that email.');
-        } else if (e.code == 'wrong-password') {
-          print('Wrong password provided for that user.');
-        }
-      }
-      print('Email: $_email, Password: $_password');
+      await _authService.login(
+        email: _email,
+        password: _password,
+        context: context,
+      );
     }
   }
 
