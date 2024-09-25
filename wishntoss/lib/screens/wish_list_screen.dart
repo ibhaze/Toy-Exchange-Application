@@ -61,75 +61,88 @@ class _WishListScreenState extends State<WishListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Wish List',
-            style: TextStyle(fontWeight: FontWeight.bold)),
-      ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : Padding(
               padding: const EdgeInsets.all(25.0),
-              child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 15.0,
-                  mainAxisSpacing: 15.0,
-                  childAspectRatio: 5 / 4,
-                ),
-                itemCount: _imageUrls.length,
-                itemBuilder: (context, index) {
-                  String toyImage = _imageUrls[index];
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Text(
+                    'Wish List',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Expanded(
+                    child: GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 15.0,
+                        mainAxisSpacing: 15.0,
+                        childAspectRatio: 5 / 4,
+                      ),
+                      itemCount: _imageUrls.length,
+                      itemBuilder: (context, index) {
+                        String toyImage = _imageUrls[index];
 
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              DetailWidget(imageUrl: toyImage),
-                        ),
-                      );
-                    },
-                    child: Stack(
-                      children: [
-                        Container(
-                          decoration: const BoxDecoration(
-                            color: Color.fromARGB(255, 177, 177, 177),
-                            borderRadius: BorderRadius.all(Radius.circular(30)),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    DetailWidget(imageUrl: toyImage),
+                              ),
+                            );
+                          },
+                          child: Stack(
                             children: [
-                              Expanded(
-                                child: ClipRRect(
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(30)),
-                                  child: Image.network(
-                                    toyImage,
-                                    fit: BoxFit.cover,
-                                    width: double.infinity,
+                              Container(
+                                decoration: const BoxDecoration(
+                                  color: Color.fromARGB(255, 177, 177, 177),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(30)),
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Expanded(
+                                      child: ClipRRect(
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(30)),
+                                        child: Image.network(
+                                          toyImage,
+                                          fit: BoxFit.cover,
+                                          width: double.infinity,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Positioned(
+                                right: 8,
+                                bottom: 8,
+                                child: GestureDetector(
+                                  onTap: () => _deleteImage(index),
+                                  child: const Icon(
+                                    Icons.favorite,
+                                    color: Color.fromARGB(255, 255, 255, 255),
+                                    size: 25,
                                   ),
                                 ),
                               ),
                             ],
                           ),
-                        ),
-                        Positioned(
-                          right: 8,
-                          bottom: 8,
-                          child: GestureDetector(
-                            onTap: () => _deleteImage(index),
-                            child: const Icon(
-                              Icons.favorite,
-                              color: Color.fromARGB(255, 255, 255, 255),
-                              size: 25,
-                            ),
-                          ),
-                        ),
-                      ],
+                        );
+                      },
                     ),
-                  );
-                },
+                  ),
+                ],
               ),
             ),
     );
